@@ -24,7 +24,7 @@ const ListItem = ({ name, logoUrl, code,capital,population, onPress }) => {
         {/* Right side */}
         <View style={styles.rightWrapper}>
           <Text style={styles.title}>{code}</Text>
-          <Text style={[styles.subtitle]}>{capital}</Text>
+          {/* <Text style={[styles.subtitle]}>{capital}</Text> */}
         </View>
 
       </View>

@@ -1,12 +1,13 @@
 import React, {useRef, useMemo, useState, useEffect} from 'react';
 import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import ListItem from './components/ListItem';
-import { countres } from './assets/data/country';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
+
 import Details from './components/Details';
+import { getCountryData } from './services/countryService';
 
 
 const ListHeader = () => (
@@ -20,12 +21,20 @@ const ListHeader = () => (
 
 export default function App() {
 
-
+  const [data, setData] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const bottomSheetModalRef = useRef(null);
 
+  useEffect( () => {
+    const fetchCountryData = async () => {
+      const countryData = await getCountryData();
+      setData(countryData);
+    }
+    fetchCountryData();
+  },[])
   const snapPoints = useMemo(() => ['50%'], []);
 
+  // console.log(data);
   const openModal = (item) => {
     setSelectedCountry(item);
     bottomSheetModalRef.current?.present();
@@ -36,7 +45,9 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <FlatList
         keyExtractor={(item) => item.alpha3Code}
-        data={countres}
+
+        data={data}
+        
         renderItem={({ item }) => (
           <ListItem
             name={item.name}
